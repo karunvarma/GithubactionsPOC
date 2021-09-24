@@ -1,6 +1,6 @@
 name: MSBuild
 
-on: [push]
+on: [pull_request ]
 
 env:
   # Path to the solution file relative to the root of the project.
@@ -22,6 +22,12 @@ jobs:
       uses: microsoft/setup-msbuild@v1.0.2
     - name: github
       run:  echo ${{ github }}
+    - name: baseref
+      run : echo ${{ github.base_ref  }}
+    - name: headref
+      run : echo ${{ github.head_ref  }}
+    - name: ref
+      run : echo ${{ github.ref	 }}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
