@@ -4,7 +4,7 @@ on: [push]
 
 env:
   # Path to the solution file relative to the root of the project.
-  SOLUTION_FILE_PATH: ./dummy_rfs/dummy_rfs.sln
+  SOLUTION_FILE_PATH: /dummy_rfs/dummy_rfs.sln
 
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
@@ -20,9 +20,10 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
-      
+    - name: root dir
+      run: dir
     - name: solution file path
-      run: dir ${{ env.SOLUTION_FILE_PATH }}
+      run:  echo ${{ env.SOLUTION_FILE_PATH }}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
