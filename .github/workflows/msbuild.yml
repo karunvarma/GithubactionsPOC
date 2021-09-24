@@ -20,6 +20,11 @@ jobs:
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
+      
+    - name: current github workspace
+      run: dir ${{ github.workspace }}
+    - name: github workspace
+      run: dir ${{env.GITHUB_WORKSPACE}}
 
     - name: Build
       working-directory: ${{env.GITHUB_WORKSPACE}}
