@@ -5,6 +5,7 @@ on: [pull_request ]
 env:
   # Path to the solution file relative to the root of the project.
   RFS_SOLUTION_PATH: ./dummy_rfs/dummy_rfs.sln
+  PUMP_SOLUTION_PATH: ./dummy_pumpsrv/dummy_pumpsrv.sln
 
   # Configuration type to build.
   # You can convert this to a build matrix if you need coverage of multiple configuration types.
@@ -14,23 +15,25 @@ env:
 jobs:
   build:
     runs-on: windows-latest
-
+  
     steps:
     - uses: actions/checkout@v2
 
     - name: Add MSBuild to PATH
       uses: microsoft/setup-msbuild@v1.0.2
-    - name: github
-      run:  echo ${{ github }}
-    - name: baseref
-      run : echo ${{ github.base_ref  }}
+
     - name: headref
       run : echo ${{ github.head_ref  }}
-    - name: ref
-      run : echo ${{ github.ref	 }}
 
-    - name: Build
+    - name: Build project rfs
       working-directory: ${{env.GITHUB_WORKSPACE}}
-      # Add additional options to the MSBuild command line here (like platform or verbosity level).
-      # See https://docs.microsoft.com/visualstudio/msbuild/msbuild-command-line-reference
+      
+      if:  ${{ startsWith(github.head_ref, 'rfs') }}
       run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.RFS_SOLUTION_PATH}}
+      
+    - name: Build project pumpsrv
+      working-directory: ${{env.GITHUB_WORKSPACE}}
+      
+      if:  ${{ startsWith(github.head_ref, 'pumpsrv') }}
+      run: msbuild /m /p:Configuration=${{env.BUILD_CONFIGURATION}} ${{env.PUMP_SOLUTION_PATH}}
+    
